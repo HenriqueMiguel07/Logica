@@ -55,7 +55,8 @@ fact {
 	// Só é possivel reservar uma sala no nivel especialista se a equipe não possui nenhum jogador de menor
 	all r: Reserva | (r.sala.nivel = Especialista) implies not TemJogadorDeMenor[r.equipe]
 
-	
+	// Nenhuma sala pode ser usada ao mesmo tempo por diferentes equipes
+	all disj r1, r2: Reserva | (r1.sala = r2.sala) implies (r1.dia != r2.dia)
 
 }
 
