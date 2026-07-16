@@ -21,7 +21,6 @@ sig Jogador {
     ehMenorDeIdade: one Boolean
 }
 
-
 abstract sig Nivel {}
 
 one sig Iniciante, Intermediario, Especialista extends Nivel {}
@@ -30,11 +29,9 @@ sig Sala {
     nivel: one Nivel
 }
 
-
 sig Equipe {
     jogadores: set Jogador
 }
-
 
 sig Dia {}
 
