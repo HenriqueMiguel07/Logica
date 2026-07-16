@@ -42,4 +42,29 @@ sig Reserva {
 }
 
 
+fact {
+	//para quaisquer duas equipes disjuntas e1 e e2 não devem compartilhar nenhum jogador
+	all disj e1,e2: Equipe | no (e1.jogadores & e2.jogadores)
+
+	// para quaisquer Reservas disjuntas r1 e r2, se forem reservadas pela mesma equipe então o dia desse ser diferente
+	all disj r1,r2: Reserva | (r1.equipe = r2.equipe) implies (r1.dia != r2.dia)
+	
+	// toda equipe que reserva uma sala deve ter no minimo 2 e no máximo 6 jogadores
+	all r: Reserva | TemNumeroDeJogadoresValido[r.equipe]
+	
+	// Só é possivel reservar uma sala no nivel especialista se a equipe não possui nenhum jogador de menor
+	all r: Reserva | (r.sala.nivel = Especialista) implies not TemJogadorDeMenor[r.equipe]
+
+	
+
+}
+
+pred TemNumeroDeJogadoresValido[e: Equipe] {
+	#e.jogadores >= 2 and #e.jogadores <= 6
+}
+
+pred TemJogadorDeMenor[e: Equipe] {
+	some j: e.jogadores | j.ehMenorDeIdade = True
+}
+
 
