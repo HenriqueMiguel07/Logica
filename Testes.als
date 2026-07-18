@@ -22,7 +22,7 @@ pred EquipeComMenorDificuldadeIntermediaria {
 
 //Testa se uma equipe sem menores de idade pode jogar em salas especialista
 pred EquipeEspecialistaValido{
-	some e: Equipe| e.sala.nivel = Especialista && not TemJogadorDeMenor[e]
+	some r: Reserva| r.sala.nivel = Especialista && not TemJogadorDeMenor[r.equipe]
 }
 
 //Testa se o sistema aceita um jogador sem equipe
@@ -40,4 +40,5 @@ run EquipeComMenorDificuldadeIntermediaria for 5
 
 run EquipeEspecialistaValido for 5
 
-run SobraClienteSemEquipe for 5
+run ClienteSemEquipe for 5
+
