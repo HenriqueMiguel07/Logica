@@ -42,3 +42,36 @@ run EquipeEspecialistaValido for 5
 
 run ClienteSemEquipe for 5
 
+
+// Testes de checagem:
+
+// Teste para ver se nenhum cliente tá em duas equipes ao mesmo tempo
+assert ClienteEmNoMaximoUmaEquipe {
+    no c: Cliente | some disj e1, e2: Equipe | c in e1.jogadores and c in e2.jogadores
+}
+
+// Garante que a mesma equipe não marque duas salas diferentes na mesma data
+assert MaximoUmaReservaEquipePorDia {
+    no disj r1, r2: Reserva | r1.equipe = r2.equipe and r1.data = r2.data
+}
+
+// Checa se a equipe da reserva tem o tamanho certo (entre 2 e 6 pessoas)
+assert RestricaoFisicaDeJogadores {
+    all r: Reserva | #r.equipe.jogadores >= 2 and #r.equipe.jogadores <= 6
+}
+
+// Se a sala for Especialista (terror), não pode ter nenhum menor de idade na equipe
+assert SegurancaMenoresDeIdade {
+    no r: Reserva | (r.sala.nivel = Especialista) and (some j: r.equipe.jogadores | j.menor_de_idade = Sim)
+}
+
+// Confere se duas equipes não alugaram a mesma sala no mesmo dia (evita choque de horário)
+assert ExclusividadeDaSalaNoDia {
+    no disj r1, r2: Reserva | r1.sala = r2.sala and r1.data = r2.data
+}
+
+check ClienteEmNoMaximoUmaEquipe for 10
+check MaximoUmaReservaEquipePorDia for 10
+check RestricaoFisicaDeJogadores for 10
+check SegurancaMenoresDeIdade for 10
+check ExclusividadeDaSalaNoDia for 10
