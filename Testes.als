@@ -27,7 +27,17 @@ pred EquipeEspecialistaValido{
 
 //Testa se o sistema aceita um jogador sem equipe
 pred ClienteSemEquipe{
-	some j: Jogador | no e: Equipe | j in e.jogadores
+	some j: Jogador | all e: Equipe | j not in e.jogadores
+}
+
+// Testa se o sistema aceita uma sala sem reserva
+pred SalaSemReserva {
+	some s: Sala | all r: Reserva | r.sala != s
+}
+
+//Testa se uma sala pode ser reservada em 2 dias diferentes
+pred SalaReservadaEmDiasDiferentes{
+	some disj r1, r2: Reserva | r1.sala = r2.sala && r1.dia != r2.dia
 }
 
 run CriarEquipeMedia for 5
@@ -42,6 +52,9 @@ run EquipeEspecialistaValido for 5
 
 run ClienteSemEquipe for 5
 
+run SalaSemReserva for 5
+
+run SalaReservadaEmDiasDiferentes for 7
 
 // Testes de checagem:
 
